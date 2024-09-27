@@ -10,6 +10,14 @@
     "@jridgewell/gen-mapping" "^0.3.5"
     "@jridgewell/trace-mapping" "^0.3.24"
 
+"@antfu/install-pkg@^0.4.0":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@antfu/install-pkg/-/install-pkg-0.4.1.tgz#d1d7f3be96ecdb41581629cafe8626d1748c0cf1"
+  integrity sha512-T7yB5QNG29afhWVkVq7XeIMBa5U/vs9mX69YqayXypPRmYzUmzwnYltplHmPtZ4HPCn+sQKeXW8I47wCbuBOjw==
+  dependencies:
+    package-manager-detector "^0.2.0"
+    tinyexec "^0.3.0"
+
 "@antfu/utils@^0.7.10":
   version "0.7.10"
   resolved "https://registry.yarnpkg.com/@antfu/utils/-/utils-0.7.10.tgz#ae829f170158e297a9b6a28f161a8e487d00814d"
@@ -646,6 +654,38 @@
   resolved "https://registry.yarnpkg.com/@fastify/busboy/-/busboy-2.1.1.tgz#b9da6a878a371829a0502c9b6c1c143ef6663f4d"
   integrity sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==
 
+"@iconify/collections@^1.0.455":
+  version "1.0.464"
+  resolved "https://registry.yarnpkg.com/@iconify/collections/-/collections-1.0.464.tgz#59c3efb18e6cde2579c7e9ef7205a410ab4a5b63"
+  integrity sha512-Ar5g/jQqVW4wZCt3sdixpzjdl4uoCQE+cIPZkO236sRVQuGMkkq5EdRdqhCsnCSFqjYqwhOAdjBVOQjimbmEHw==
+  dependencies:
+    "@iconify/types" "*"
+
+"@iconify/types@*", "@iconify/types@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@iconify/types/-/types-2.0.0.tgz#ab0e9ea681d6c8a1214f30cd741fe3a20cc57f57"
+  integrity sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==
+
+"@iconify/utils@^2.1.32":
+  version "2.1.33"
+  resolved "https://registry.yarnpkg.com/@iconify/utils/-/utils-2.1.33.tgz#cbf7242a52fd0ec58c42d37d28e4406b5327e8c0"
+  integrity sha512-jP9h6v/g0BIZx0p7XGJJVtkVnydtbgTgt9mVNcGDYwaa7UhdHdI9dvoq+gKj9sijMSJKxUPEG2JyjsgXjxL7Kw==
+  dependencies:
+    "@antfu/install-pkg" "^0.4.0"
+    "@antfu/utils" "^0.7.10"
+    "@iconify/types" "^2.0.0"
+    debug "^4.3.6"
+    kolorist "^1.8.0"
+    local-pkg "^0.5.0"
+    mlly "^1.7.1"
+
+"@iconify/vue@4.1.3-beta.1":
+  version "4.1.3-beta.1"
+  resolved "https://registry.yarnpkg.com/@iconify/vue/-/vue-4.1.3-beta.1.tgz#5c6b113b132e900ef0f04406297c8a773f185d40"
+  integrity sha512-N7iEOnWfhjbMqiyGMhotJKip23nrK5l3+T1hQwpEjKeMD2o4zOjm8zmeEfOOH81EXllhhOm7upR8jcH499YRWA==
+  dependencies:
+    "@iconify/types" "^2.0.0"
+
 "@ioredis/commands@^1.1.1":
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/@ioredis/commands/-/commands-1.2.0.tgz#6d61b3097470af1fdbbe622795b8921d42018e11"
@@ -785,6 +825,15 @@
     "@nuxt/schema" "^3.13.1"
     execa "^7.2.0"
 
+"@nuxt/devtools-kit@^1.4.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@nuxt/devtools-kit/-/devtools-kit-1.5.1.tgz#849983e6dcda96f102d140af0f0e04acbcc0fca5"
+  integrity sha512-s2dpN1vCOgua2pSYG7/xUMjf7CyLTBeEK2IRqeOeiNpiElft4ygDddlg6P3ot0Hpp+GvWTz0uPGot/vI73uk4w==
+  dependencies:
+    "@nuxt/kit" "^3.13.2"
+    "@nuxt/schema" "^3.13.2"
+    execa "^7.2.0"
+
 "@nuxt/devtools-wizard@1.4.2":
   version "1.4.2"
   resolved "https://registry.yarnpkg.com/@nuxt/devtools-wizard/-/devtools-wizard-1.4.2.tgz#07b1e1913b736f885dcd365bdd54e9ae225aca49"
@@ -844,6 +893,24 @@
     which "^3.0.1"
     ws "^8.18.0"
 
+"@nuxt/icon@^1.5.2":
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/@nuxt/icon/-/icon-1.5.2.tgz#894c84bfebed72c9848d721ae7c8fff58e2d6b4d"
+  integrity sha512-VjtYIMo+d+jrBASHhh3eLZgfRAYhZI/E5z7DMlgjSRmUBYtMv/Qz86dSZdYEWM2rdHzzXtFurQRandIHC71fBQ==
+  dependencies:
+    "@iconify/collections" "^1.0.455"
+    "@iconify/types" "^2.0.0"
+    "@iconify/utils" "^2.1.32"
+    "@iconify/vue" "4.1.3-beta.1"
+    "@nuxt/devtools-kit" "^1.4.1"
+    "@nuxt/kit" "^3.13.0"
+    consola "^3.2.3"
+    fast-glob "^3.3.2"
+    local-pkg "^0.5.0"
+    mlly "^1.7.1"
+    pathe "^1.1.2"
+    std-env "^3.7.0"
+
 "@nuxt/kit@3.13.1", "@nuxt/kit@^3.13.1":
   version "3.13.1"
   resolved "https://registry.yarnpkg.com/@nuxt/kit/-/kit-3.13.1.tgz#69501efc661ba861f45ed947918efb3e84838365"
@@ -870,6 +937,32 @@
     unimport "^3.11.1"
     untyped "^1.4.2"
 
+"@nuxt/kit@^3.13.0", "@nuxt/kit@^3.13.2":
+  version "3.13.2"
+  resolved "https://registry.yarnpkg.com/@nuxt/kit/-/kit-3.13.2.tgz#4c019a87e08c33ec14d1059497ba40568b82bfed"
+  integrity sha512-KvRw21zU//wdz25IeE1E5m/aFSzhJloBRAQtv+evcFeZvuroIxpIQuUqhbzuwznaUwpiWbmwlcsp5uOWmi4vwA==
+  dependencies:
+    "@nuxt/schema" "3.13.2"
+    c12 "^1.11.2"
+    consola "^3.2.3"
+    defu "^6.1.4"
+    destr "^2.0.3"
+    globby "^14.0.2"
+    hash-sum "^2.0.0"
+    ignore "^5.3.2"
+    jiti "^1.21.6"
+    klona "^2.0.6"
+    knitwork "^1.1.0"
+    mlly "^1.7.1"
+    pathe "^1.1.2"
+    pkg-types "^1.2.0"
+    scule "^1.3.0"
+    semver "^7.6.3"
+    ufo "^1.5.4"
+    unctx "^2.3.1"
+    unimport "^3.12.0"
+    untyped "^1.4.2"
+
 "@nuxt/schema@3.13.1", "@nuxt/schema@^3.13.1":
   version "3.13.1"
   resolved "https://registry.yarnpkg.com/@nuxt/schema/-/schema-3.13.1.tgz#a60ccb53457dec085b4aa69b6b5a6683618af328"
@@ -886,6 +979,24 @@
     ufo "^1.5.4"
     uncrypto "^0.1.3"
     unimport "^3.11.1"
+    untyped "^1.4.2"
+
+"@nuxt/schema@3.13.2", "@nuxt/schema@^3.13.2":
+  version "3.13.2"
+  resolved "https://registry.yarnpkg.com/@nuxt/schema/-/schema-3.13.2.tgz#4c1011ebf9fd5f821900bbfc50fd5eff2e663e9b"
+  integrity sha512-CCZgpm+MkqtOMDEgF9SWgGPBXlQ01hV/6+2reDEpJuqFPGzV8HYKPBcIFvn7/z5ahtgutHLzjP71Na+hYcqSpw==
+  dependencies:
+    compatx "^0.1.8"
+    consola "^3.2.3"
+    defu "^6.1.4"
+    hookable "^5.5.3"
+    pathe "^1.1.2"
+    pkg-types "^1.2.0"
+    scule "^1.3.0"
+    std-env "^3.7.0"
+    ufo "^1.5.4"
+    uncrypto "^0.1.3"
+    unimport "^3.12.0"
     untyped "^1.4.2"
 
 "@nuxt/telemetry@^2.5.4":
@@ -1129,6 +1240,15 @@
   version "5.1.0"
   resolved "https://registry.yarnpkg.com/@rollup/pluginutils/-/pluginutils-5.1.0.tgz#7e53eddc8c7f483a4ad0b94afb1f7f5fd3c771e0"
   integrity sha512-XTIWOPPcpvyKI6L1NHo0lFlCyznUEyPmPY1mc3KpPVDYulHSTvyeLNVW00QTLIAFNhR3kYnJTQHeGqU4M3n09g==
+  dependencies:
+    "@types/estree" "^1.0.0"
+    estree-walker "^2.0.2"
+    picomatch "^2.3.1"
+
+"@rollup/pluginutils@^5.1.2":
+  version "5.1.2"
+  resolved "https://registry.yarnpkg.com/@rollup/pluginutils/-/pluginutils-5.1.2.tgz#d3bc9f0fea4fd4086aaac6aa102f3fa587ce8bd9"
+  integrity sha512-/FIdS3PyZ39bjZlwqFnWqCOVnW7o963LtKMwQOD0NhQqw22gSr2YY1afu3FxRip4ZCZNsD5jq6Aaz6QV3D/Njw==
   dependencies:
     "@types/estree" "^1.0.0"
     estree-walker "^2.0.2"
@@ -4628,6 +4748,11 @@ tiny-invariant@^1.1.0:
   resolved "https://registry.yarnpkg.com/tiny-invariant/-/tiny-invariant-1.3.3.tgz#46680b7a873a0d5d10005995eb90a70d74d60127"
   integrity sha512-+FbBPE1o9QAYvviau/qC5SE3caw21q3xkvWKBtja5vgqOWIHHJ3ioaq1VPfn/Szqctz2bU/oYeKd9/z5BL+PVg==
 
+tinyexec@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/tinyexec/-/tinyexec-0.3.0.tgz#ed60cfce19c17799d4a241e06b31b0ec2bee69e6"
+  integrity sha512-tVGE0mVJPGb0chKhqmsoosjsS+qUnJVGJpZgsHYQcGoPlG3B51R3PouqTgEGH2Dc9jjFyOqOpix6ZHNMXp1FZg==
+
 tinyglobby@0.2.5:
   version "0.2.5"
   resolved "https://registry.yarnpkg.com/tinyglobby/-/tinyglobby-0.2.5.tgz#8cdd1df1b155bf2a3c4d5ea2581489f967a38318"
@@ -4750,6 +4875,25 @@ unimport@^3.11.1, unimport@^3.7.2:
   integrity sha512-5y8dSvNvyevsnw4TBQkIQR1Rjdbb+XjVSwQwxltpnVZrStBvvPkMPcZrh1kg5kY77kpx6+D4Ztd3W6FOBH/y2Q==
   dependencies:
     "@rollup/pluginutils" "^5.1.0"
+    acorn "^8.12.1"
+    escape-string-regexp "^5.0.0"
+    estree-walker "^3.0.3"
+    fast-glob "^3.3.2"
+    local-pkg "^0.5.0"
+    magic-string "^0.30.11"
+    mlly "^1.7.1"
+    pathe "^1.1.2"
+    pkg-types "^1.2.0"
+    scule "^1.3.0"
+    strip-literal "^2.1.0"
+    unplugin "^1.14.1"
+
+unimport@^3.12.0:
+  version "3.13.0"
+  resolved "https://registry.yarnpkg.com/unimport/-/unimport-3.13.0.tgz#0ef719ede5661db04fa62ea77db952a22e1e34bf"
+  integrity sha512-0WkKsLy8jkcnB38VQdAGvF0N2trJyDbUuHsfXcyrspwgwWTIThiMpvnDNZMVsuNc11SwT2GYzcQ2RnI1TY/xcw==
+  dependencies:
+    "@rollup/pluginutils" "^5.1.2"
     acorn "^8.12.1"
     escape-string-regexp "^5.0.0"
     estree-walker "^3.0.3"

@@ -4,8 +4,8 @@
       <img src="/logo/logo.png" alt="Logo" class="logo">
       <span class="name">Board Foot Calculator</span>
     </div>
-    <a href="https://github.com/your-repo" class="github-link">
-      <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub" class="github-icon">
+    <a href="https://github.com/allancoding/bfoot-calc" class="github-link">
+      <Icon name="uil:github" style="color: white" class="github-icon" />
     </a>
   </nav>
 </template>
@@ -22,8 +22,9 @@ body, html {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  background-color: #333;
-  color: white;
+  background-color: #000;
+  color: #fff;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
 }
 
 .github-link {
