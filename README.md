@@ -20,3 +20,5 @@ Start the development server on `http://localhost:3000`:
 yarn install
 yarn dev
 ```
+
+This project is for my WebDev class at Southwest Tech
