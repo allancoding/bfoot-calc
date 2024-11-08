@@ -5,9 +5,12 @@
       <img src="/logo/logo.png" alt="Logo" class="logo">
       <span class="name">Board Foot Calculator</span>
     </div>
-    <a href="https://github.com/allancoding/bfoot-calc" class="github-link">
-      <Icon name="uil:github" style="color: white" class="github-icon" />
-    </a>
+    <div class="navbar-right">
+      <a href="#prices">Change Prices</a>
+      <a href="https://github.com/allancoding/bfoot-calc">
+        <Icon name="uil:github" style="color: white" class="github-icon" />
+      </a>
+    </div>
   </nav>
   <div id="app">
     <table>
@@ -138,9 +141,10 @@ body, html {
   box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
 }
 
-.github-link {
+.navbar-right {
   display: flex;
   align-items: center;
+  padding: auto;
 }
 
 .github-icon {
