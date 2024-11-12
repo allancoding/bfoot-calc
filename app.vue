@@ -8,77 +8,90 @@
     <div class="navbar-right">
       <a href="#prices">Change Prices</a>
       <a href="https://github.com/allancoding/bfoot-calc">
-        <Icon name="uil:github" style="color: white" class="github-icon" />
+        <Icon name="uil:github" class="github-icon" />
       </a>
     </div>
   </nav>
   <div id="app">
-    <table>
-      <thead>
-        <tr>
-          <th>Board Name</th>
-          <th>Length</th>
-          <th>Width</th>
-          <th>Thickness</th>
-          <th>Quantity</th>
-          <th>Type of Wood</th>
-          <th>Board Feet with Price</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr
-          v-for="(row, index) in rows"
-          :key="index"
-        >
-          <td>
-            <input
-              type="text"
-              v-model="row.name"
-            />
-          </td>
-          <td>
-            <input
-              type="number"
-              v-model="row.length"
-              @input="calculateBoardFeet"
-            />
-          </td>
-          <td>
-            <input
-              type="number"
-              v-model="row.width"
-              @input="calculateBoardFeet"
-            />
-          </td>
-          <td>
-            <input
-              type="number"
-              v-model="row.thickness"
-              @input="calculateBoardFeet"
-            />
-          </td>
-          <td>
-            <input
-              type="number"
-              v-model="row.quantity"
-              @input="calculateBoardFeet"
-            />
-          </td>
-          <td>
-            <select>
-              <option
-                v-for="(woodtype, index) in woodtypes"
-                :key="index"
-                :value="woodtype.price"
-              >
-                {{ woodtype.name }}
-              </option>
-            </select>
-
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="table-wapper">
+      <table>
+        <thead>
+          <tr>
+            <th>Board Name</th>
+            <th>Length</th>
+            <th>Width</th>
+            <th>Thickness</th>
+            <th>Quantity</th>
+            <th>Type of Wood</th>
+            <th>Board Feet with Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="(row, index) in rows"
+            :key="index"
+          >
+            <td>
+              <input
+                type="text"
+                class="num"
+                v-model="row.name"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                class="num"
+                v-model="row.length"
+                @input="calculateBoardFeet"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                class="num"
+                v-model="row.width"
+                @input="calculateBoardFeet"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                class="num"
+                v-model="row.thickness"
+                @input="calculateBoardFeet"
+              />
+            </td>
+            <td>
+              <input
+                type="number"
+                class="num"
+                v-model="row.quantity"
+                @input="calculateBoardFeet"
+              />
+            </td>
+            <td>
+              <select>
+                <option
+                  v-for="(woodtype, index) in woodtypes"
+                  :key="index"
+                  :value="woodtype.price"
+                >
+                  {{ woodtype.name }}
+                </option>
+              </select>
+            </td>
+            <td>
+              <input
+                type="text"
+                v-model="row.boardFeet"
+                disabled
+              />
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
     <button @click="addRow">Add Row</button>
   </div>
 </template>
@@ -147,6 +160,16 @@ body, html {
   padding: auto;
 }
 
+.navbar-right a {
+  color: white;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.navbar-right a:hover {
+  color: #ccc;
+}
+
 .github-icon {
   width: 24px;
   height: 24px;
@@ -174,11 +197,38 @@ body, html {
   padding: 20px;
 }
 
-/* add css for table color white*/
-table {
+.table-wapper {
+  overflow: hidden;
+  border-radius: 10px;
+  border: 2px solid white;
   width: 100%;
-  border-collapse: collapse;
-  color: white;
 }
 
+table {
+  width: 100%;
+  color: white;
+  border-collapse: collapse;
+}
+
+th, td {
+  border-right: 2px solid white;
+}
+
+th:last-child, td:last-child {
+  border-right: none;
+}
+
+input, select {
+  width: 90%;
+  padding: 5px;
+  margin: 5px;
+  border: none;
+  background-color: #444;
+  color: white;
+  border-radius: 5px;
+}
+
+.num {
+  text-align: center;
+}
 </style>
