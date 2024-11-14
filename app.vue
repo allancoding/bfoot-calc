@@ -6,7 +6,7 @@
       <span class="name">Board Foot Calculator</span>
     </div>
     <div class="navbar-right">
-      <a href="#prices">Change Prices</a>
+      <a href="#prices" @click="showModal = true">Change Prices</a>
       <a href="https://github.com/allancoding/bfoot-calc">
         <Icon name="uil:github" class="github-icon" />
       </a>
@@ -93,11 +93,20 @@
       </table>
     </div>
     <button @click="addRow">Add Row</button>
+    <Modal :visible="showModal" @close="showModal = false">
+      <h2>Modal Content</h2>
+      <p>This is a custom modal.</p>
+    </Modal>
   </div>
 </template>
 
 <script>
+import Modal from './Modal.vue';
+
 export default {
+  components: {
+    Modal,
+  },
   data() {
     return {
       rows: [
@@ -116,10 +125,11 @@ export default {
         { name: 'Cherry', price: 5.5 },
         { name: 'Walnut', price: 6.5 },
       ],
+      showModal: false,
     };
   },
   methods: {
-    addRow() {
+    async addRow() {
       this.rows.push({
         length: 0,
         width: 0,
@@ -134,6 +144,27 @@ export default {
       });
     },
   },
+  mounted() {
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" && event.target.nodeName === "INPUT") {
+        var inputs = Array.from(document.querySelectorAll('td .num'));
+        var index = inputs.indexOf(event.target);
+        if (index === inputs.length - 1) {
+          this.addRow().then(() => {
+            inputs = Array.from(document.querySelectorAll('td .num'));
+            index = inputs.indexOf(event.target);
+            inputs[index + 1].focus();
+          });
+        } else if (index > -1 && index < inputs.length - 1) {
+          if (inputs[index + 1].value === '0') {
+            inputs[index + 1].select();
+          }
+          inputs[index + 1].focus();
+        }
+        event.preventDefault();
+      }
+    });
+  }
 };
 </script>
 
@@ -212,6 +243,10 @@ table {
 
 th, td {
   border-right: 2px solid white;
+}
+
+thead tr {
+  border-bottom: 2px solid white;
 }
 
 th:last-child, td:last-child {
