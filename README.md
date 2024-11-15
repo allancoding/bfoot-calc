@@ -1,4 +1,5 @@
 # Board To Foot Calculator
+[![Netlify Status](https://api.netlify.com/api/v1/badges/45403af2-37de-488e-9149-8c1c7f6b7e86/deploy-status)](https://app.netlify.com/sites/bfoot-calc/deploys)
 
 This is a calculator that you can use to calculate the price of your woods project after designing it.
 
