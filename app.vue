@@ -94,8 +94,11 @@
     </div>
     <button @click="addRow">Add Row</button>
     <Modal :visible="showModal" @close="showModal = false">
-      <h2>Modal Content</h2>
-      <p>This is a custom modal.</p>
+      <h2>Change Prices</h2>
+      <div v-for="(wood, index) in woodtypes" :key="index" class="price-row">
+        <span>{{ wood.name }}</span>
+        <input type="number" v-model.number="wood.price" />
+      </div>
     </Modal>
   </div>
 </template>
@@ -265,5 +268,28 @@ input, select {
 
 .num {
   text-align: center;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 7px;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.price-row span {
+  color: white;
+  font-size: 1.2em;
+}
+
+.price-row input {
+  width: 100px;
+  padding: 5px;
+  border: none;
+  background-color: #444;
+  color: white;
+  border-radius: 5px;
 }
 </style>

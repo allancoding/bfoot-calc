@@ -1,7 +1,7 @@
 <template>
     <div class="modal-overlay" v-if="visible">
       <div class="modal">
-        <button @click="close">Close</button>
+        <Icon class= "close" name="material-symbols:close-rounded" @click="close" />
         <slot></slot>
       </div>
     </div>
@@ -35,9 +35,24 @@
     justify-content: center;
     align-items: center;
   }
+
   .modal {
-    background: white;
+    background: #000;
     padding: 20px;
     border-radius: 5px;
+    min-width: 25%;
+    min-height: 25%;
+    color: #fff;
+    box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    border: 1px solid white;
+    position: relative;
+  }
+
+  .close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
   }
 </style>
