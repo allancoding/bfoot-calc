@@ -6,7 +6,7 @@
       <span class="name">Board Foot Calculator</span>
     </div>
     <div class="navbar-right">
-      <a href="#prices" @click="showModal = true">Change Prices</a>
+      <a href="#prices" @click="openPrices()">Change Prices</a>
       <a href="https://github.com/allancoding/bfoot-calc">
         <Icon name="uil:github" class="github-icon" />
       </a>
@@ -93,12 +93,13 @@
       </table>
     </div>
     <button @click="addRow">Add Row</button>
-    <Modal :visible="showModal" @close="showModal = false">
+    <Modal :visible="showModal" @close="test()">
       <h2>Change Prices</h2>
       <div v-for="(wood, index) in woodtypes" :key="index" class="price-row">
         <span>{{ wood.name }}</span>
         <input type="number" v-model.number="wood.price" />
       </div>
+      <button @click="savePrices">Save Prices</button>
     </Modal>
   </div>
 </template>
@@ -146,8 +147,20 @@ export default {
         row.boardFeet = row.length * row.width * row.thickness * row.quantity / 144;
       });
     },
+    savePrices() {
+      console.log('Wood types saved:', this.woodtypes);
+      localStorage.setItem('woodtypes', JSON.stringify(this.woodtypes));
+      this.showModal = false;
+    },
+    openPrices() {
+      this.$refs.child.test();
+    }
   },
   mounted() {
+    const savedWoodtypes = localStorage.getItem('woodtypes');
+    if (savedWoodtypes) {
+      this.woodtypes = JSON.parse(savedWoodtypes);
+    }
     document.addEventListener("keydown", (event) => {
       if (event.key === "Enter" && event.target.nodeName === "INPUT") {
         var inputs = Array.from(document.querySelectorAll('td .num'));

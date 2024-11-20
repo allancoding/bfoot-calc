@@ -1,10 +1,10 @@
 <template>
-    <div class="modal-overlay" v-if="visible">
-      <div class="modal">
-        <Icon class= "close" name="material-symbols:close-rounded" @click="close" />
-        <slot></slot>
-      </div>
+  <div class="modal-overlay">
+    <div class="modal">
+      <Icon class="close" name="material-symbols:close-rounded" @click="close" />
+      <slot></slot>
     </div>
+  </div>
 </template>
   
 <script>
@@ -19,11 +19,32 @@
       close() {
         this.$emit('close');
       },
+      test() {
+        console.log('test');
+      },
     },
   };
 </script>
   
 <style scoped>
+  @keyframes zoomIn {
+    from {
+      transform: scale(0);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+
+  @keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
   .modal-overlay {
     position: fixed;
     top: 0;
@@ -34,6 +55,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    animation: fadeIn ease 0.5s;
+    animation-iteration-count: 1;
+    animation-fill-mode: both;
+    display: none;
   }
 
   .modal {
@@ -47,6 +72,9 @@
     border-radius: 10px;
     border: 1px solid white;
     position: relative;
+    animation: zoomIn ease 0.5s;
+    animation-iteration-count: 1;
+    animation-fill-mode: both;
   }
 
   .close {
