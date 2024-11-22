@@ -1,7 +1,7 @@
 <template>
-  <div class="modal-overlay">
+  <div class="modal-overlay" :class="{ show: isShown }">
     <div class="modal">
-      <Icon class="close" name="material-symbols:close-rounded" @click="close" />
+      <Icon class="close" name="material-symbols:close-rounded" @click="closeModal()" />
       <slot></slot>
     </div>
   </div>
@@ -10,17 +10,29 @@
 <script>
   export default {
     props: {
-      visible: {
+      isShown: {
         type: Boolean,
         default: false,
       },
     },
-    methods: {
-      close() {
-        this.$emit('close');
+    data() {
+      return {
+        localIsShown: this.isShown,
+      };
+    },
+    watch: {
+      isShown(newVal) {
+        this.localIsShown = newVal;
       },
-      test() {
-        console.log('test');
+    },
+    methods: {
+      closeModal() {
+        this.localIsShown = false;
+        this.$emit('update:isShown', false);
+      },
+      openModal() {
+        this.localIsShown = true;
+        this.$emit('update:isShown', true);
       },
     },
   };
@@ -36,12 +48,14 @@
     }
   }
 
-  @keyframes fadeIn {
+  @keyframes fadeInOut {
     0% {
       opacity: 0;
+      visibility: hidden;
     }
     100% {
       opacity: 1;
+      visibility: visible;
     }
   }
 
@@ -55,10 +69,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    animation: fadeIn ease 0.5s;
-    animation-iteration-count: 1;
-    animation-fill-mode: both;
-    display: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0s 0.5s;
+  }
+
+  .modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s ease;
   }
 
   .modal {

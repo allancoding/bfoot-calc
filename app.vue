@@ -6,7 +6,7 @@
       <span class="name">Board Foot Calculator</span>
     </div>
     <div class="navbar-right">
-      <a href="#prices" @click="openPrices()">Change Prices</a>
+      <a href="#prices" @click="showModal = true">Change Prices</a>
       <a href="https://github.com/allancoding/bfoot-calc">
         <Icon name="uil:github" class="github-icon" />
       </a>
@@ -93,7 +93,7 @@
       </table>
     </div>
     <button @click="addRow">Add Row</button>
-    <Modal :visible="showModal" @close="test()">
+    <Modal v-model:isShown="showModal">
       <h2>Change Prices</h2>
       <div v-for="(wood, index) in woodtypes" :key="index" class="price-row">
         <span>{{ wood.name }}</span>
@@ -128,8 +128,7 @@ export default {
         { name: 'Maple', price: 4.5 },
         { name: 'Cherry', price: 5.5 },
         { name: 'Walnut', price: 6.5 },
-      ],
-      showModal: false,
+      ]
     };
   },
   methods: {
@@ -151,9 +150,6 @@ export default {
       console.log('Wood types saved:', this.woodtypes);
       localStorage.setItem('woodtypes', JSON.stringify(this.woodtypes));
       this.showModal = false;
-    },
-    openPrices() {
-      this.$refs.child.test();
     }
   },
   mounted() {
