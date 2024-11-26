@@ -6,7 +6,7 @@
       <span class="name">Board Foot Calculator</span>
     </div>
     <div class="navbar-right">
-      <a href="#prices" @click="showModal = true">Change Prices</a>
+      <a href="#prices" @click="showPriceModal = true">Change Prices</a>
       <a href="https://github.com/allancoding/bfoot-calc">
         <Icon name="uil:github" class="github-icon" />
       </a>
@@ -93,19 +93,19 @@
       </table>
     </div>
     <button @click="addRow">Add Row</button>
-    <Modal v-model:isShown="showModal">
+    <Modal v-show="showPriceModal" @close-modal="showPriceModal = false">
       <h2>Change Prices</h2>
       <div v-for="(wood, index) in woodtypes" :key="index" class="price-row">
         <span>{{ wood.name }}</span>
         <input type="number" v-model.number="wood.price" />
       </div>
-      <button @click="savePrices">Save Prices</button>
+      <button @click="showPriceModal = false">Save Prices</button>
     </Modal>
   </div>
 </template>
 
 <script>
-import Modal from './Modal.vue';
+import Modal from './components/Modal.vue';
 
 export default {
   components: {
@@ -128,7 +128,8 @@ export default {
         { name: 'Maple', price: 4.5 },
         { name: 'Cherry', price: 5.5 },
         { name: 'Walnut', price: 6.5 },
-      ]
+      ],
+      showPriceModal: false,
     };
   },
   methods: {
