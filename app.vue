@@ -13,7 +13,7 @@
     </div>
   </nav>
   <div id="app">
-    <div class="table-wapper">
+    <div class="table-wapper table-responsive">
       <table>
         <thead>
           <tr>
@@ -93,7 +93,7 @@
       </table>
     </div>
     <button @click="addRow">Add Row</button>
-    <Modal v-show="showPriceModal" @close-modal="showPriceModal = false">
+    <Modal @close-modal="showPriceModal = false" :class="[showPriceModal ? 'showModal': 'hideModal']">
       <h2>Change Prices</h2>
       <div v-for="(wood, index) in woodtypes" :key="index" class="price-row">
         <span>{{ wood.name }}</span>
@@ -253,9 +253,18 @@ table {
   color: white;
   border-collapse: collapse;
 }
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table-responsive table {
+  min-width: 600px;
+}
 
 th, td {
   border-right: 2px solid white;
+  text-align: center;
 }
 
 thead tr {
@@ -267,7 +276,6 @@ th:last-child, td:last-child {
 }
 
 input, select {
-  width: 90%;
   padding: 5px;
   margin: 5px;
   border: none;
@@ -295,11 +303,28 @@ input, select {
 }
 
 .price-row input {
-  width: 100px;
+  width: min-content;
   padding: 5px;
   border: none;
   background-color: #444;
   color: white;
   border-radius: 5px;
+}
+
+button {
+  background-color: #784220;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 8px 4px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #643318;
 }
 </style>

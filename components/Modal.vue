@@ -1,14 +1,12 @@
 <template>
-  <transition name="fade">
-    <div class="modal-overlay" @click="$emit('close-modal')">
-      <div class="modal" @click.stop>
-        <slot></slot>
-      </div>
+  <div class="modal-overlay" @click="$emit('close-modal')">
+    <div class="modal" @click.stop>
       <div class="close" @click="$emit('close-modal')">
         <Icon class="close" name="material-symbols:close-rounded" />
       </div>
+      <slot></slot>
     </div>
-  </transition>
+  </div>
 </template>
   
 <script>
@@ -16,16 +14,14 @@
 </script>
   
 <style scoped>
-  .fade-enter-active, .fade-leave-active {
-    transition: opacity 0.5s;
-  }
-  
-  .fade-enter, .fade-leave-to {
-    opacity: 0;
+  .showModal {
+    opacity: 1;
+    visibility: visible;
   }
 
-  .fade-enter-to, .fade-leave {
-    opacity: 1;
+  .hideModal {
+    opacity: 0;
+    visibility: hidden;
   }
 
   .modal-overlay {
@@ -38,11 +34,12 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    transition: opacity 0.5s, visibility 0.5s;
   }
 
   .modal {
     background: #000;
-    padding: 20px;
+    padding: 20px 20px;
     border-radius: 5px;
     min-width: 25%;
     min-height: 25%;
@@ -51,6 +48,7 @@
     border-radius: 10px;
     border: 1px solid white;
     position: relative;
+    text-align: center;
   }
 
   .close {
@@ -58,5 +56,6 @@
     top: 10px;
     right: 10px;
     cursor: pointer;
+    color: white;
   }
 </style>
