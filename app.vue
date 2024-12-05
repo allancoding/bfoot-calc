@@ -6,7 +6,7 @@
       <span class="name">Board Foot Calculator</span>
     </div>
     <div class="navbar-right">
-      <a href="#prices" @click="showPriceModal = true">Change Prices</a>
+      <a href="#prices" @click="openPriceModal()">Change Prices</a>
       <a href="https://github.com/allancoding/bfoot-calc">
         <Icon name="uil:github" class="github-icon" />
       </a>
@@ -71,7 +71,7 @@
               />
             </td>
             <td>
-              <select>
+              <select v-model="row.pricePerBoardFoot" @change="calculatePrice">
                 <option
                   v-for="(woodtype, index) in woodtypes"
                   :key="index"
@@ -93,13 +93,13 @@
       </table>
     </div>
     <button @click="addRow">Add Row</button>
-    <Modal @close-modal="showPriceModal = false" :class="[showPriceModal ? 'showModal': 'hideModal']">
+    <Modal @close-modal="closePriceModal(false)" :class="[showPriceModal ? 'showModal': 'hideModal']">
       <h2>Change Prices</h2>
-      <div v-for="(wood, index) in woodtypes" :key="index" class="price-row">
+      <div v-for="(wood, index) in tempWoodtypes" :key="index" class="price-row">
         <span>{{ wood.name }}</span>
         <input type="number" v-model.number="wood.price" />
       </div>
-      <button @click="showPriceModal = false">Save Prices</button>
+      <button @click="closePriceModal(true)">Save Prices</button>
     </Modal>
   </div>
 </template>
@@ -120,6 +120,8 @@ export default {
           thickness: 0,
           quantity: 0,
           boardFeet: 0,
+          pricePerBoardFoot: 0,
+          price: 0,
         },
       ],
       woodtypes: [
@@ -129,6 +131,7 @@ export default {
         { name: 'Cherry', price: 5.5 },
         { name: 'Walnut', price: 6.5 },
       ],
+      tempWoodtypes: [],
       showPriceModal: false,
     };
   },
@@ -145,9 +148,30 @@ export default {
     calculateBoardFeet() {
       this.rows.forEach((row) => {
         row.boardFeet = row.length * row.width * row.thickness * row.quantity / 144;
+        this.calculatePrice();
       });
     },
+      calculatePrice() {
+      this.rows.forEach((row) => {
+        row.price = row.boardFeet * row.pricePerBoardFoot;
+      });
+    },
+    openPriceModal() {
+      this.tempWoodtypes = JSON.parse(JSON.stringify(this.woodtypes));
+      this.showPriceModal = true;
+    },
+    closePriceModal(save) {
+      console.log('Wood types saved:', this.woodtypes);
+      if (save) {
+        this.savePrices();
+      }
+      this.showPriceModal = false;
+      if (window.location.hash === '#prices') {
+        history.replaceState(null, null, ' ');
+      }
+    },
     savePrices() {
+      this.woodtypes = JSON.parse(JSON.stringify(this.tempWoodtypes));
       console.log('Wood types saved:', this.woodtypes);
       localStorage.setItem('woodtypes', JSON.stringify(this.woodtypes));
       this.showModal = false;
@@ -158,8 +182,12 @@ export default {
     if (savedWoodtypes) {
       this.woodtypes = JSON.parse(savedWoodtypes);
     }
+    if (window.location.hash === '#prices') {
+      this.tempWoodtypes = JSON.parse(JSON.stringify(this.woodtypes));
+      this.showPriceModal = true;
+    }
     document.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" && event.target.nodeName === "INPUT") {
+      if ((event.key === "Enter" || event.key === "Tab") && event.target.nodeName === "INPUT") {
         var inputs = Array.from(document.querySelectorAll('td .num'));
         var index = inputs.indexOf(event.target);
         if (index === inputs.length - 1) {
@@ -253,6 +281,7 @@ table {
   color: white;
   border-collapse: collapse;
 }
+
 .table-responsive {
   width: 100%;
   overflow-x: auto;
@@ -282,6 +311,20 @@ input, select {
   background-color: #444;
   color: white;
   border-radius: 5px;
+  width: max-content;
+}
+
+input[type='number']::-webkit-inner-spin-button, 
+input[type='number']::-webkit-outer-spin-button { 
+  opacity: 0;
+  margin-left: -14px;
+  transition: opacity 0.5s;
+}
+
+input[type='number']::-webkit-inner-spin-button:hover, 
+input[type='number']::-webkit-outer-spin-button:hover { 
+  opacity: 0.75;
+  margin-left: -14px;
 }
 
 .num {
