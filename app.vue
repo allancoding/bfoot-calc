@@ -13,7 +13,19 @@
     </div>
   </nav>
   <div id="app">
-    <div class="table-wapper table-responsive">
+    <div class="defaults">
+      <label for="pricePerBoardFoot">Default Wood:</label>
+      <select v-model="rows.pricePerBoardFoot">
+        <option
+          v-for="(woodtype, index) in woodtypes"
+          :key="index"
+          :value="woodtype.price"
+        >
+        {{ woodtype.name }}
+        </option>
+      </select>
+    </div>
+    <div class="table-wapper">
       <table>
         <thead>
           <tr>
@@ -35,6 +47,7 @@
               <input
                 type="text"
                 class="num"
+                placeholder="Name"
                 v-model="row.name"
               />
             </td>
@@ -76,6 +89,7 @@
                   v-for="(woodtype, index) in woodtypes"
                   :key="index"
                   :value="woodtype.price"
+                  :selected="woodtypes[index].name == 'Pine'"
                 >
                   {{ woodtype.name }}
                 </option>
@@ -214,6 +228,7 @@ body, html {
   margin: 0;
   padding: 0;
   background-color: #000;
+  color: #fff;
 }
 
 .navbar {
@@ -269,8 +284,23 @@ body, html {
   padding: 20px;
 }
 
+.defaults {
+  text-align: right;
+  width: 100%;
+  margin-bottom: 5px;
+}
+
+.defaults select {
+  padding: 5px;
+  margin: 5px;
+  border: none;
+  background-color: #444;
+  color: white;
+  border-radius: 5px;
+}
+
 .table-wapper {
-  overflow: hidden;
+  overflow: auto;
   border-radius: 10px;
   border: 2px solid white;
   width: 100%;
@@ -280,20 +310,19 @@ table {
   width: 100%;
   color: white;
   border-collapse: collapse;
-}
-
-.table-responsive {
-  width: 100%;
-  overflow-x: auto;
-}
-
-.table-responsive table {
-  min-width: 600px;
+  table-layout: fixed;
 }
 
 th, td {
   border-right: 2px solid white;
   text-align: center;
+  width: 8em;
+}
+
+@media screen and (max-width: 500px) {
+  th, td {
+    width: 5em;
+  }
 }
 
 thead tr {
@@ -304,14 +333,24 @@ th:last-child, td:last-child {
   border-right: none;
 }
 
-input, select {
+table input {
   padding: 5px;
   margin: 5px;
   border: none;
   background-color: #444;
   color: white;
   border-radius: 5px;
-  width: max-content;
+  width: calc(100% - 20px);
+}
+
+table select {
+  padding: 5px;
+  margin: 5px;
+  border: none;
+  background-color: #444;
+  color: white;
+  border-radius: 5px;
+  width: calc(100% - 10px);
 }
 
 input[type='number']::-webkit-inner-spin-button, 
@@ -324,7 +363,14 @@ input[type='number']::-webkit-outer-spin-button {
 input[type='number']::-webkit-inner-spin-button:hover, 
 input[type='number']::-webkit-outer-spin-button:hover { 
   opacity: 0.75;
-  margin-left: -14px;
+}
+
+@media (pointer: coarse) {
+  input[type='number']::-webkit-inner-spin-button, 
+  input[type='number']::-webkit-outer-spin-button { 
+    opacity: 0.75;
+    margin-left: 0px;
+  }
 }
 
 .num {
