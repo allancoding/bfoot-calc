@@ -15,15 +15,17 @@
   <div id="app">
     <div class="defaults">
       <label for="pricePerBoardFoot">Default Wood:</label>
-      <select v-model="rows.pricePerBoardFoot">
+      <select v-model="defaultWood" @change="changeDefaultWood()">
         <option
           v-for="(woodtype, index) in woodtypes"
           :key="index"
-          :value="woodtype.price"
+          :value="woodtype.name"
         >
         {{ woodtype.name }}
         </option>
       </select>
+      <button @click="saveSettings">Save</button>
+      <button @click="loadSettings">Load</button>
     </div>
     <div class="table-wapper">
       <table>
@@ -38,7 +40,7 @@
             <th>Board Feet with Price</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody v-if="tableReady">
           <tr
             v-for="(row, index) in rows"
             :key="index"
@@ -88,8 +90,7 @@
                 <option
                   v-for="(woodtype, index) in woodtypes"
                   :key="index"
-                  :value="woodtype.price"
-                  :selected="woodtypes[index].name == 'Pine'"
+                  :value="woodtype.name"
                 >
                   {{ woodtype.name }}
                 </option>
@@ -98,15 +99,34 @@
             <td>
               <input
                 type="text"
-                v-model="row.boardFeet"
+                v-model="row.price"
                 disabled
               />
             </td>
           </tr>
         </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="5"></td>
+            <td>
+              <strong>Total: {{ rows.reduce((acc, row) => acc + row.boardFeet, 0).toFixed(2) }} bf.</strong>
+            </td>
+            <td>
+              <strong>
+                Total: ${{ rows.reduce((acc, row) => acc + parseFloat(row.price.replace('$', '')), 0).toFixed(2) }}
+              </strong>
+            </td>
+          </tr>
+        </tfoot>
       </table>
+      <div style="text-align: center;" v-if="!tableReady">
+        <p>Loading...</p>
+      </div>
     </div>
-    <button @click="addRow">Add Row</button>
+    <div class="buttons">
+      <button @click="addRow">Add Row</button>
+      <button @click="clear">Clear</button>
+    </div>
     <Modal @close-modal="closePriceModal(false)" :class="[showPriceModal ? 'showModal': 'hideModal']">
       <h2>Change Prices</h2>
       <div v-for="(wood, index) in tempWoodtypes" :key="index" class="price-row">
@@ -134,9 +154,9 @@ export default {
           thickness: 0,
           quantity: 0,
           boardFeet: 0,
-          pricePerBoardFoot: 0,
-          price: 0,
-        },
+          pricePerBoardFoot: "",
+          price: "$0.00",
+        }
       ],
       woodtypes: [
         { name: 'Pine', price: 2.5 },
@@ -147,7 +167,20 @@ export default {
       ],
       tempWoodtypes: [],
       showPriceModal: false,
+      tableReady: false,
+      defaultWood: 'Oak'
     };
+  },
+  created() {
+    this.rows[0].pricePerBoardFoot = this.defaultWood;
+  },
+  watch: {
+    rows: {
+      handler(newRows) {
+        this.onRowsChanged(newRows);
+      },
+      deep: true
+    }
   },
   methods: {
     async addRow() {
@@ -157,7 +190,12 @@ export default {
         thickness: 0,
         quantity: 0,
         boardFeet: 0,
+        pricePerBoardFoot: this.defaultWood,
+        price: "$0.00",
       });
+    },
+    changeDefaultWood() {
+      localStorage.setItem('defaultwood', this.defaultWood);
     },
     calculateBoardFeet() {
       this.rows.forEach((row) => {
@@ -165,9 +203,14 @@ export default {
         this.calculatePrice();
       });
     },
-      calculatePrice() {
+    calculatePrice() {
       this.rows.forEach((row) => {
-        row.price = row.boardFeet * row.pricePerBoardFoot;
+        if (row.pricePerBoardFoot) {
+          row.price = row.boardFeet * this.woodtypes.find(wood => wood.name === row.pricePerBoardFoot).price;
+          row.price = "$" + row.price.toFixed(2);
+        } else {
+          row.price = "$0.00";
+        }
       });
     },
     openPriceModal() {
@@ -175,7 +218,6 @@ export default {
       this.showPriceModal = true;
     },
     closePriceModal(save) {
-      console.log('Wood types saved:', this.woodtypes);
       if (save) {
         this.savePrices();
       }
@@ -186,10 +228,56 @@ export default {
     },
     savePrices() {
       this.woodtypes = JSON.parse(JSON.stringify(this.tempWoodtypes));
-      console.log('Wood types saved:', this.woodtypes);
       localStorage.setItem('woodtypes', JSON.stringify(this.woodtypes));
       this.showModal = false;
-    }
+    },
+    onRowsChanged(newRows) {
+      localStorage.setItem('rows', JSON.stringify(newRows));
+    },
+    saveSettings() {
+      const settings = {
+        woodtypes: this.woodtypes,
+        defaultWood: this.defaultWood,
+        rows: this.rows,
+      };
+      const settingsBlob = new Blob([JSON.stringify(settings)], { type: 'application/json' });
+      const url = URL.createObjectURL(settingsBlob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'Board Foot Settings.json';
+      a.click();
+      URL.revokeObjectURL(url);
+    },
+    loadSettings() {
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.accept = 'application/json';
+      input.onchange = (event) => {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          const settings = JSON.parse(event.target.result);
+          this.woodtypes = settings.woodtypes;
+          this.defaultWood = settings.defaultWood;
+          this.rows = settings.rows;
+        };
+        reader.readAsText(file);
+      };
+      input.click();
+    },
+    clear() {
+      this.rows = [
+        {
+          length: 0,
+          width: 0,
+          thickness: 0,
+          quantity: 0,
+          boardFeet: 0,
+          pricePerBoardFoot: this.defaultWood,
+          price: 0,
+        },
+      ];
+    },
   },
   mounted() {
     const savedWoodtypes = localStorage.getItem('woodtypes');
@@ -200,6 +288,16 @@ export default {
       this.tempWoodtypes = JSON.parse(JSON.stringify(this.woodtypes));
       this.showPriceModal = true;
     }
+    const savedDefaultWood = localStorage.getItem('defaultwood');
+    if (savedDefaultWood) {
+      this.defaultWood = savedDefaultWood;
+    }
+    const savedRows = localStorage.getItem('rows');
+    if (savedRows) {
+      this.rows = JSON.parse(savedRows);
+    }
+    this.calculatePrice();
+    this.tableReady = true;
     document.addEventListener("keydown", (event) => {
       if ((event.key === "Enter" || event.key === "Tab") && event.target.nodeName === "INPUT") {
         var inputs = Array.from(document.querySelectorAll('td .num'));
@@ -327,6 +425,10 @@ th, td {
 
 thead tr {
   border-bottom: 2px solid white;
+}
+
+tfoot tr {
+  border-top: 2px solid white;
 }
 
 th:last-child, td:last-child {
