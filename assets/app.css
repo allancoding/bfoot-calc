@@ -1,0 +1,261 @@
+body,
+html {
+  margin: 0;
+  padding: 0;
+  background-color: #000;
+  color: #fff;
+}
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: #000;
+  color: #fff;
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  padding: auto;
+}
+
+.navbar-right a {
+  color: white;
+  text-decoration: none;
+  margin-right: 10px;
+}
+
+.navbar-right a:hover {
+  color: #ccc;
+}
+
+.github-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.logo-name {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+}
+
+.name {
+  font-size: 1.5em;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.settings-row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.left {
+  width: 100%;
+  margin-bottom: 5px;
+  float: left;
+  align-self: center;
+}
+
+.right {
+  text-align: right;
+  width: 100%;
+  margin-bottom: 5px;
+  float: right;
+}
+
+.right select {
+  padding: 5px;
+  margin: 5px;
+  border: none;
+  background-color: #444;
+  color: white;
+  border-radius: 5px;
+}
+
+.table-wapper {
+  overflow: auto;
+  border-radius: 10px;
+  border: 2px solid white;
+  width: 100%;
+}
+
+table {
+  width: 100%;
+  color: white;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+th,
+td {
+  border-right: 2px solid white;
+  text-align: center;
+  width: 8em;
+}
+
+@media screen and (max-width: 500px) {
+  th,
+  td {
+    width: 5em;
+  }
+}
+
+thead tr {
+  border-bottom: 2px solid white;
+}
+
+tfoot tr {
+  border-top: 2px solid white;
+}
+
+th:last-child,
+td:last-child {
+  border-right: none;
+}
+
+table input {
+  padding: 5px;
+  margin: 5px;
+  border: none;
+  background-color: #444;
+  color: white;
+  border-radius: 5px;
+  width: calc(100% - 20px);
+}
+
+table select {
+  padding: 5px;
+  margin: 5px;
+  border: none;
+  background-color: #444;
+  color: white;
+  border-radius: 5px;
+  width: calc(100% - 10px);
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  opacity: 0;
+  margin-left: -14px;
+  transition: opacity 0.5s;
+}
+
+input[type="number"]::-webkit-inner-spin-button:hover,
+input[type="number"]::-webkit-outer-spin-button:hover {
+  opacity: 0.75;
+}
+
+@media (pointer: coarse) {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    opacity: 0.75;
+    margin-left: 0px;
+  }
+}
+
+.num {
+  text-align: center;
+}
+
+.price-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 7px;
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.price-row span {
+  color: white;
+  font-size: 1.2em;
+}
+
+.price-row input {
+  width: min-content;
+  padding: 5px;
+  border: none;
+  background-color: #444;
+  color: white;
+  border-radius: 5px;
+}
+
+button {
+  background-color: #784220;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin: 8px 4px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+button:hover {
+  background-color: #643318;
+}
+
+.delete-row {
+  padding: 0 !important;
+  margin: 0 !important;
+  width: 1em !important;
+}
+
+.delete-row span {
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.delete-row span:hover {
+  color: #ccc;
+}
+
+.input-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.dollar-symbol {
+  position: absolute;
+  left: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  font-size: 0.875em !important;
+  font-weight: normal !important;
+  padding-top: 1px;
+}
+.input-wrapper input[type="number"] {
+  padding-left: 0.9em;
+  font-size: 0.875em !important;
+  font-weight: normal !important;
+}
+
+.styled-input {
+  padding: 5px;
+  margin: 5px;
+  border: none;
+  background-color: #444;
+  color: white;
+  border-radius: 5px;
+  width: 8em;
+}
