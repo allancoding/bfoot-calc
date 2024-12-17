@@ -7,8 +7,11 @@
     </div>
     <div class="navbar-right">
       <a href="#prices" @click="openPriceModal()" title="Change the prices of wood">Change Prices</a>
-      <a href="#print" title="Print the page">
+      <a href="#print" @click="openPrintModal()" title="Print the page">
         <Icon name="uil:print" class="github-icon" />
+      </a>
+      <a href="#settings" @click="openSettingsModal()" title="Settings">
+        <Icon name="uil:setting" class="github-icon" />
       </a>
       <a href="https://github.com/allancoding/bfoot-calc" title="GitHub">
         <Icon name="uil:github" class="github-icon" />
@@ -18,13 +21,7 @@
   <div id="app">
     <div class="settings-row">
       <div class="left">
-        <label for="projectName">Project Name:</label>
-        <input
-          type="text"
-          class="styled-input"
-          id="projectName"
-          placeholder="Woods 1"
-        />
+        <h3>{{ projects[selectedProject].name }}</h3>
       </div>
       <div class="right">
         <label for="defaultWood">Default Wood:</label>
@@ -35,6 +32,16 @@
             :value="woodtype.name"
           >
             {{ woodtype.name }}
+          </option>
+        </select>
+        <label for="projectSelect">Project:</label>
+        <select id="projectSelect" v-model="projects[selectedProject].name">
+          <option
+            v-for="(project, index) in projects"
+            :key="index"
+            :value="project.name"
+          >
+            {{ project.name }}
           </option>
         </select>
         <button @click="saveSettings">Save</button>
@@ -56,9 +63,9 @@
           </tr>
         </thead>
         <tbody v-if="tableReady">
-          <tr v-for="(row, index) in rows" :key="index">
+          <tr v-for="(row, index) in projects[selectedProject].rows" :key="index">
             <td class="delete-row">
-              <Icon @click="rows.splice(index, 1)" name="uil:trash" />
+              <Icon @click="projects[selectedProject].rows.splice(index, 1)" name="uil:trash" />
             </td>
             <td>
               <input
@@ -122,7 +129,7 @@
             <td>
               <strong>
                 Total: ${{
-                  rows
+                  projects[selectedProject].rows
                     .reduce(
                       (acc, row) =>
                         acc + parseFloat(row.price.replace("$", "")),
@@ -168,6 +175,19 @@
       </div>
       <button @click="closePriceModal(true)">Save Prices</button>
     </Modal>
+    <Modal
+      @close-modal="closeSettingsModal(false)"
+      :class="[showSettingsModal ? 'showModal' : 'hideModal']"
+    >
+      <h2>Settings</h2>
+      <div class="price-row">
+        <span>Project Name</span>
+        <div class="input-wrapper">
+          <input type="text" v-model="projects[selectedProject].name" />
+        </div>
+      </div>
+      <button @click="closeSettingsModal(true)">Save</button>
+    </Modal>
   </div>
 </template>
 
@@ -181,6 +201,20 @@ export default {
   },
   data() {
     return {
+      projects: [{
+        name: "Default Project",
+        rows: [
+          {
+            length: 0,
+            width: 0,
+            thickness: 0,
+            quantity: 0,
+            boardFeet: 0,
+            pricePerBoardFoot: "",
+            price: "$0.00",
+          },
+        ],
+      }],
       rows: [
         {
           length: 0,
@@ -199,17 +233,19 @@ export default {
         { name: "Cherry", price: 5.5 },
         { name: "Walnut", price: 6.5 },
       ],
+      selectedProject: 0,
       tempWoodtypes: [],
       showPriceModal: false,
+      showSettingsModal: false,
       tableReady: false,
       defaultWood: "Oak",
     };
   },
   created() {
-    this.rows[0].pricePerBoardFoot = this.defaultWood;
+    this.projects[this.selectedProject].rows[0].pricePerBoardFoot = this.defaultWood;
   },
   watch: {
-    rows: {
+    'projects[this.selectedProject].rows': {
       handler(newRows) {
         this.onRowsChanged(newRows);
       },
@@ -218,7 +254,7 @@ export default {
   },
   methods: {
     async addRow() {
-      this.rows.push({
+      this.projects[this.selectedProject].rows.push({
         length: 0,
         width: 0,
         thickness: 0,
@@ -232,14 +268,14 @@ export default {
       localStorage.setItem("defaultwood", this.defaultWood);
     },
     calculateBoardFeet() {
-      this.rows.forEach((row) => {
+      this.projects[this.selectedProject].rows.forEach((row) => {
         row.boardFeet =
           (row.length * row.width * row.thickness * row.quantity) / 144;
         this.calculatePrice();
       });
     },
     calculatePrice() {
-      this.rows.forEach((row) => {
+      this.projects[this.selectedProject].rows.forEach((row) => {
         if (row.pricePerBoardFoot) {
           row.price =
             row.boardFeet *
@@ -264,6 +300,18 @@ export default {
         history.replaceState(null, null, " ");
       }
     },
+    openSettingsModal() {
+      this.showSettingsModal = true;
+    },
+    closeSettingsModal(save) {
+      if (save) {
+        this.savePrices();
+      }
+      this.showSettingsModal = false;
+      if (window.location.hash === "#settings") {
+        history.replaceState(null, null, " ");
+      }
+    },
     savePrices() {
       this.woodtypes = JSON.parse(JSON.stringify(this.tempWoodtypes));
       localStorage.setItem("woodtypes", JSON.stringify(this.woodtypes));
@@ -271,13 +319,13 @@ export default {
       this.calculatePrice();
     },
     onRowsChanged(newRows) {
-      localStorage.setItem("rows", JSON.stringify(newRows));
+      localStorage.setItem("project", JSON.stringify(newRows));
     },
     saveSettings() {
       const settings = {
         woodtypes: this.woodtypes,
         defaultWood: this.defaultWood,
-        rows: this.rows,
+        projects: this.projects,
       };
       const settingsBlob = new Blob([JSON.stringify(settings)], {
         type: "application/json",
@@ -300,14 +348,14 @@ export default {
           const settings = JSON.parse(event.target.result);
           this.woodtypes = settings.woodtypes;
           this.defaultWood = settings.defaultWood;
-          this.rows = settings.rows;
+          this.projects = settings.projects;
         };
         reader.readAsText(file);
       };
       input.click();
     },
     clear() {
-      this.rows = [
+      this.projects[this.selectedProject].rows = [
         {
           length: 0,
           width: 0,
@@ -338,14 +386,17 @@ export default {
     if (window.location.hash === "#prices") {
       this.tempWoodtypes = JSON.parse(JSON.stringify(this.woodtypes));
       this.showPriceModal = true;
+    } else if (window.location.hash === "#settings") {
+      this.tempWoodtypes = JSON.parse(JSON.stringify(this.woodtypes));
+      this.showSettingsModal = true;
     }
     const savedDefaultWood = localStorage.getItem("defaultwood");
     if (savedDefaultWood) {
       this.defaultWood = savedDefaultWood;
     }
-    const savedRows = localStorage.getItem("rows");
-    if (savedRows) {
-      this.rows = JSON.parse(savedRows);
+    const savedProjects = localStorage.getItem("projects");
+    if (savedProjects) {
+      this.projects = JSON.parse(savedProjects);
     }
     this.calculatePrice();
     this.tableReady = true;

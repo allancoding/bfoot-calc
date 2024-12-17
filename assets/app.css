@@ -66,17 +66,22 @@ html {
 }
 
 .left {
-  width: 100%;
-  margin-bottom: 5px;
+  width: 25%;
   float: left;
   align-self: center;
+  padding-bottom: 5px;
+}
+
+.left h3 {
+  margin: 0;
+  padding: 0;
 }
 
 .right {
   text-align: right;
   width: 100%;
-  margin-bottom: 5px;
   float: right;
+  padding-bottom: 5px;
 }
 
 .right select {
