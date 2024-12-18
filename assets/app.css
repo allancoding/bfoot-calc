@@ -32,9 +32,15 @@ html {
   color: #ccc;
 }
 
-.github-icon {
+.icon {
   width: 24px;
   height: 24px;
+  color: white;
+}
+
+.icon:hover {
+  cursor: pointer;
+  color: #ccc;
 }
 
 .logo-name {
@@ -249,10 +255,20 @@ button:hover {
   font-weight: normal !important;
   padding-top: 1px;
 }
+
 .input-wrapper input[type="number"] {
   padding-left: 0.9em;
   font-size: 0.875em !important;
   font-weight: normal !important;
+}
+
+.list-input {
+  font-size: 0.875em !important;
+  font-weight: normal !important;
+}
+
+.input-padding {
+  margin: 0 10px;
 }
 
 .styled-input {
@@ -263,4 +279,38 @@ button:hover {
   color: white;
   border-radius: 5px;
   width: 8em;
+}
+
+.new-project {
+  text-align: left;
+  padding: 10px;
+}
+
+.projects {
+  align-items: center;
+  margin-bottom: 7px;
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: flex-end;
+}
+
+.projects input {
+  width: 100%;
+  padding: 5px;
+  border: none;
+  background-color: #444;
+  color: white;
+  border-radius: 5px;
+  margin: 10px;
+}
+
+.projects span {
+  margin: 10px;
+}
+
+.scroll {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 15px;
 }

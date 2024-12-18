@@ -1,10 +1,10 @@
 <template>
   <div class="modal-overlay" @click="$emit('close-modal')">
     <div class="modal" @click.stop>
-      <div class="close" @click="$emit('close-modal')">
-        <Icon class="close" name="material-symbols:close-rounded" />
-      </div>
-      <slot></slot>
+        <div class="close" @click="$emit('close-modal')">
+          <Icon class="close" name="material-symbols:close-rounded" />
+        </div>
+        <slot></slot>
     </div>
   </div>
 </template>
@@ -39,7 +39,7 @@
 
   .modal {
     background: #000;
-    padding: 20px 20px;
+    padding: 20px;
     border-radius: 5px;
     min-width: 25%;
     min-height: 25%;
@@ -57,5 +57,9 @@
     right: 10px;
     cursor: pointer;
     color: white;
+  }
+
+  .close:hover {
+    color: red;
   }
 </style>

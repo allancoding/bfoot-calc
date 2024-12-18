@@ -8,13 +8,13 @@
     <div class="navbar-right">
       <a href="#prices" @click="openPriceModal()" title="Change the prices of wood">Change Prices</a>
       <a href="#print" @click="openPrintModal()" title="Print the page">
-        <Icon name="uil:print" class="github-icon" />
+        <Icon name="uil:print" class="icon" />
       </a>
       <a href="#settings" @click="openSettingsModal()" title="Settings">
-        <Icon name="uil:setting" class="github-icon" />
+        <Icon name="uil:setting" class="icon" />
       </a>
       <a href="https://github.com/allancoding/bfoot-calc" title="GitHub">
-        <Icon name="uil:github" class="github-icon" />
+        <Icon name="uil:github" class="icon" />
       </a>
     </div>
   </nav>
@@ -44,8 +44,6 @@
             {{ project.name }}
           </option>
         </select>
-        <button @click="saveSettings">Save</button>
-        <button @click="loadSettings">Load</button>
       </div>
     </div>
     <div class="table-wapper">
@@ -155,38 +153,52 @@
       :class="[showPriceModal ? 'showModal' : 'hideModal']"
     >
       <h2>Change Prices</h2>
-      <div
-        v-for="(wood, index) in tempWoodtypes"
-        :key="index"
-        class="price-row"
-      >
-        <span>{{ wood.name }}</span>
-        <div class="input-wrapper">
-          <span class="dollar-symbol">$</span>
+      <div class="scroll">
+        <div
+          v-for="(wood, index) in tempWoodtypes"
+          :key="index"
+          class="price-row"
+        >
           <input
-            min="0.01"
-            step="0.01"
-            type="number"
-            v-model.number="wood.price"
-            @blur="formatCurrency(index)"
-            @input="formatOnStep(index, $event)"
-          />
+              type="text"
+              class="list-input"
+              v-model="wood.name"
+            />
+          <span class="input-padding">-</span>
+          <div class="input-wrapper">
+            <span class="dollar-symbol">$</span>
+            <input
+              min="0.01"
+              step="0.01"
+              type="number"
+              v-model.number="wood.price"
+              @blur="formatCurrency(index)"
+              @input="formatOnStep(index, $event)"
+            />
+            BF
+          </div>
         </div>
       </div>
+      <button @click="newWoodtype()">Add Wood Type</button>
       <button @click="closePriceModal(true)">Save Prices</button>
     </Modal>
     <Modal
       @close-modal="closeSettingsModal(false)"
       :class="[showSettingsModal ? 'showModal' : 'hideModal']"
     >
-      <h2>Settings</h2>
-      <div class="price-row">
-        <span>Project Name</span>
-        <div class="input-wrapper">
-          <input type="text" v-model="projects[selectedProject].name" />
-        </div>
+      <h2>Project Settings</h2>
+      <p>You can import and export individual projects or just save all projects.</p>
+      <div class="projects">
+        <input type="text" v-model="projects[selectedProject].name" />
+        <Icon @click="exportProject(projects[selectedProject])" name="uil:export" title="Export Project" class="icon"/>
+        <Icon @click="importProject(projects[selectedProject])" name="uil:import" title="Import Project" class="icon"/>
+        <Icon @click="projects[selectedProject].rows = []" name="uil:trash" title="Delete Project" class="icon"/>
       </div>
-      <button @click="closeSettingsModal(true)">Save</button>
+      <div class="new-project">
+        <Icon @click="addProject()" name="uil:plus" title="Add Project" class="icon"/>
+      </div>
+      <button @click="closeSettingsModal();saveSettings()">Save Projects</button>
+      <button @click="closeSettingsModal();loadSettings()">Load Projects</button>
     </Modal>
   </div>
 </template>
@@ -194,6 +206,7 @@
 <script>
 import Modal from "./components/Modal.vue";
 import "~/assets/app.css";
+import "~/assets/scrollbar.css";
 
 export default {
   components: {
@@ -215,37 +228,38 @@ export default {
           },
         ],
       }],
-      rows: [
-        {
-          length: 0,
-          width: 0,
-          thickness: 0,
-          quantity: 0,
-          boardFeet: 0,
-          pricePerBoardFoot: "",
-          price: "$0.00",
-        },
-      ],
       woodtypes: [
-        { name: "Pine", price: 2.5 },
-        { name: "Oak", price: 3.5 },
-        { name: "Maple", price: 4.5 },
-        { name: "Cherry", price: 5.5 },
-        { name: "Walnut", price: 6.5 },
+        { name: "Red Oak", price: 4.15 },
+        { name: "Cherry", price: 6.5 },
+        { name: "African Mahogany", price: 7.95 },
+        { name: "Rustic Cherry", price: 3.54 },
+        { name: "Rustic Walnut", price: 7.29 },
+        { name: "Ceder", price: 5.3 },
+        { name: "Soft Maple", price: 4.98 },
+        { name: "Hard Maple", price: 5.38 },
+        { name: "Walnut FAS", price: 14.15 },
+        { name: "Knotty Alder", price: 2.65 },
+        { name: "Alder", price: 2.85 },
+        { name: "Rustic Maple", price: 3.55 },
+        { name: "Poplar", price: 3.65 },
+        { name: "Pine", price: 3.2 },
+        { name: "Sapele", price: 8.6 },
+        { name: "White Oak", price: 8.72 },
+        { name: "Plumb Sapele", price: 8.95 },
       ],
       selectedProject: 0,
       tempWoodtypes: [],
       showPriceModal: false,
       showSettingsModal: false,
       tableReady: false,
-      defaultWood: "Oak",
+      defaultWood: "Alder",
     };
   },
   created() {
     this.projects[this.selectedProject].rows[0].pricePerBoardFoot = this.defaultWood;
   },
   watch: {
-    'projects[this.selectedProject].rows': {
+    projects: {
       handler(newRows) {
         this.onRowsChanged(newRows);
       },
@@ -303,10 +317,7 @@ export default {
     openSettingsModal() {
       this.showSettingsModal = true;
     },
-    closeSettingsModal(save) {
-      if (save) {
-        this.savePrices();
-      }
+    closeSettingsModal() {
       this.showSettingsModal = false;
       if (window.location.hash === "#settings") {
         history.replaceState(null, null, " ");
@@ -333,7 +344,7 @@ export default {
       const url = URL.createObjectURL(settingsBlob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = "Board Foot Settings.json";
+      a.download = "Board Foot Projects.json";
       a.click();
       URL.revokeObjectURL(url);
     },
@@ -377,6 +388,26 @@ export default {
         this.formatCurrency(index);
       }
     },
+    newWoodtype() {
+      this.tempWoodtypes.push({ name: "", price: 0 });
+    },
+    addProject() {
+      this.projects.push({
+        name: "New Project " + (this.projects.length + 1),
+        rows: [
+          {
+            length: 0,
+            width: 0,
+            thickness: 0,
+            quantity: 0,
+            boardFeet: 0,
+            pricePerBoardFoot: this.defaultWood,
+            price: "$0.00",
+          },
+        ],
+      });
+      this.selectedProject = this.projects.length - 1;
+    },
   },
   mounted() {
     const savedWoodtypes = localStorage.getItem("woodtypes");
@@ -394,7 +425,7 @@ export default {
     if (savedDefaultWood) {
       this.defaultWood = savedDefaultWood;
     }
-    const savedProjects = localStorage.getItem("projects");
+    const savedProjects = localStorage.getItem("project");
     if (savedProjects) {
       this.projects = JSON.parse(savedProjects);
     }
