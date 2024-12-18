@@ -43,6 +43,12 @@ html {
   color: #ccc;
 }
 
+.small-icon {
+  width: 16px;
+  height: 16px;
+  margin: 5px;
+}
+
 .logo-name {
   display: flex;
   align-items: center;
@@ -281,14 +287,53 @@ button:hover {
   width: 8em;
 }
 
+.styled-select {
+  padding: 5px;
+  margin: 5px;
+  border: none;
+  background-color: #444;
+  color: white;
+  border-radius: 5px;
+}
+
+.styled-checkbox[type="checkbox"]::before {
+  content: "\2713";
+  display: inline-flex;
+  width: 1.2em;
+  height: 1.2em;
+  background-color: #666;
+  border: 1px solid white;
+  border-radius: 2px;
+  color: transparent;
+  justify-content: center;
+  align-items: center;
+}
+
+.styled-checkbox[type="checkbox"]:checked::before {
+  display: inline-flex;
+  width: 1.2em;
+  height: 1.2em;
+  background-color: #444;
+  border: 1px solid white;
+  border-radius: 2px;
+  color: #fff;
+  justify-content: center;
+  align-items: center;
+}
+
 .new-project {
-  text-align: left;
-  padding: 10px;
+  text-align: right;
+  padding: 5px 25px;
+}
+
+.projects-scroll {
+  max-height: 60vh;
+  overflow-y: auto;
+  padding: 15px;
 }
 
 .projects {
   align-items: center;
-  margin-bottom: 7px;
   display: flex;
   flex-direction: row;
   align-content: center;
@@ -313,4 +358,9 @@ button:hover {
   max-height: 70vh;
   overflow-y: auto;
   padding: 15px;
+}
+
+.print {
+  display: none;
+  width: 100%;
 }

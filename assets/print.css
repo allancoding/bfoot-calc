@@ -1,0 +1,47 @@
+@media print { 
+    @page { 
+        margin-top: 1cm; 
+    }
+}
+
+main {
+    margin-top: 1cm; 
+}
+
+header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+
+.right-left {
+    display: flex;
+    justify-content: space-between;
+}
+
+.left, .right {
+    padding: 5px;
+    margin: 0;
+}
+
+.print-table {
+    color: #000 !important;
+    border: 2px solid black !important;
+}
+
+.print-table table {
+    color: black !important;
+}
+
+.print-table th,
+.print-table td {
+  border-right: 2px solid black !important;
+}
+
+.print-table thead tr {
+    border-bottom: 2px solid black !important;
+}
+  
+.print-table tfoot tr {
+    border-top: 2px solid black !important;
+}
