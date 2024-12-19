@@ -201,7 +201,7 @@
     <iframe class="print" id="print" src="print"></iframe>
     <footer>
         <p>Created by <a href="https://allancoding.dev" target="_blank">Allan Coding</a></p>
-        <p>View the <a href="https://github.com/allancoding/bfoot-calc" target="_blank">Source code</a></p>
+        <p>View the <a href="https://github.com/allancoding/bfoot-calc" target="_blank">Source Code</a></p>
     </footer>
 </template>
 <script>
