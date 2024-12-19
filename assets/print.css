@@ -38,6 +38,8 @@ header {
     color: black !important;
     page-break-inside: auto;
     table-layout: auto !important;
+    width: -webkit-fill-available !important;
+    border-collapse: collapse !important;
 }
 
 .print-table th,
