@@ -536,7 +536,6 @@ export default {
         printPage() {
             const IFrame = document.getElementById("print");
             IFrame.contentWindow.postMessage("print", '*');
-            this.showPrintModal = false;
         },
         loadPrint() {
             const IFrame = document.getElementById("print");

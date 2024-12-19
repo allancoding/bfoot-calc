@@ -1,11 +1,6 @@
-@media print { 
-    @page { 
-        margin-top: 1cm; 
-    }
-}
-
 main {
-    margin-top: 1cm; 
+    margin-right: 5px;
+    margin-left: 5px;
 }
 
 header {
@@ -27,15 +22,28 @@ header {
 .print-table {
     color: #000 !important;
     border: 2px solid black !important;
+    overflow: initial !important;
+    page-break-after: always;
+}
+
+.no-page-break {
+    page-break-after: avoid;
 }
 
 .print-table table {
     color: black !important;
+    page-break-inside: auto;
 }
 
 .print-table th,
 .print-table td {
   border-right: 2px solid black !important;
+  border-bottom: 2px solid black !important;
+}
+
+.print-table th:last-child,
+.print-table td:last-child {
+  border-right: 0px solid black !important;
 }
 
 .print-table thead tr {
@@ -44,4 +52,14 @@ header {
   
 .print-table tfoot tr {
     border-top: 2px solid black !important;
+    border-bottom: 0px !important;
+}
+
+.print-table tfoot tr td {
+    border-bottom: 0px !important;
+}
+
+.print-table p {
+    margin: 2px;
+    overflow-wrap: anywhere;
 }

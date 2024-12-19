@@ -7,63 +7,112 @@
     </div>
   </header>
   <main>
-    <div class="table-wapper print-table">
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Length</th>
-            <th>Width</th>
-            <th>Thickness</th>
-            <th>Quantity</th>
-            <th>Wood</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody v-if="tableReady">
-          <tr v-for="(row, index) in projects[0].rows" :key="index">
-            <td>
-              <p>{{ row.name }}</p>
-            </td>
-            <td>
-              <p>{{ row.length }}</p>
-            </td>
-            <td>
-              <p>{{ row.width }}</p>
-            </td>
-            <td>
-              <p>{{ row.thickness }}</p>
-            </td>
-            <td>
-              <p>{{ row.quantity }}</p>
-            </td>
-            <td>
-              <p>{{ row.pricePerBoardFoot }}</p>
-            </td>
-            <td>
-              <p>{{ row.price }}</p>
-            </td>
-          </tr>
-        </tbody>
-        <tfoot v-if="tableReady">
-          <tr>
-            <td colspan="6"></td>
-            <td>
-              <strong>
-                Total: ${{
-                  projects[0].rows
-                    .reduce(
-                      (acc, row) =>
-                        acc + parseFloat(row.price.replace("$", "")),
-                      0
-                    )
-                    .toFixed(2)
-                }}
-              </strong>
-            </td>
-          </tr>
-        </tfoot>
-      </table>
+    <div class="project" v-if="printProject === 'all'" v-for="(project, index) in projects" :key="index">
+      <h2 v-if="tableReady" style="text-align: center;">{{ project.name }}</h2>
+      <div v-for="(chunk, chunkIndex) in getPaginatedRows(project.rows)" :key="chunkIndex" class="table-wrapper print-table" :class="{ 'no-page-break': chunkIndex === getPaginatedRows(project.rows).length - 1 }">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Length</th>
+              <th>Width</th>
+              <th>Thickness</th>
+              <th>Quantity</th>
+              <th>Wood</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody v-if="tableReady">
+            <tr v-for="(row, rowIndex) in chunk" :key="rowIndex">
+              <td><p>{{ row.name }}</p></td>
+              <td><p>{{ row.length }}</p></td>
+              <td><p>{{ row.width }}</p></td>
+              <td><p>{{ row.thickness }}</p></td>
+              <td><p>{{ row.quantity }}</p></td>
+              <td><p>{{ row.pricePerBoardFoot }}</p></td>
+              <td><p>{{ row.price }}</p></td>
+            </tr>
+          </tbody>
+          <tfoot v-if="tableReady && chunkIndex === getPaginatedRows(project.rows).length - 1">
+            <tr>
+              <td colspan="6"></td>
+              <td>
+                <strong>
+                  Total: ${{
+                    project.rows
+                      .reduce(
+                        (acc, row) => acc + parseFloat(row.price.replace("$", "")),
+                        0
+                      )
+                      .toFixed(2)
+                  }}
+                </strong>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+    <div class="project" v-if="printProject !== 'all'">
+      <h2 v-if="tableReady" style="text-align: center;">{{ projects[printProject].name }}</h2>
+      <div class="table-wapper print-table no-page-break">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Length</th>
+              <th>Width</th>
+              <th>Thickness</th>
+              <th>Quantity</th>
+              <th>Wood</th>
+              <th>Price</th>
+            </tr>
+          </thead>
+          <tbody v-if="tableReady">
+            <tr v-for="(row, index) in projects[printProject].rows" :key="index">
+              <td>
+                <p>{{ row.name }}</p>
+              </td>
+              <td>
+                <p>{{ row.length }}</p>
+              </td>
+              <td>
+                <p>{{ row.width }}</p>
+              </td>
+              <td>
+                <p>{{ row.thickness }}</p>
+              </td>
+              <td>
+                <p>{{ row.quantity }}</p>
+              </td>
+              <td>
+                <p>{{ row.pricePerBoardFoot }}</p>
+              </td>
+              <td>
+                <p>{{ row.price }}</p>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot v-if="tableReady">
+            <tr>
+              <td colspan="6"></td>
+              <td>
+                <strong>
+                  Total: ${{
+                    projects[printProject].rows
+                      .reduce(
+                        (acc, row) =>
+                          acc + parseFloat(row.price.replace("$", "")),
+                        0
+                      )
+                      .toFixed(2)
+                  }}
+                </strong>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
     </div>
   </main>
 </template>
@@ -74,6 +123,8 @@ html {
   padding: 0;
   background-color: #fff;
   color: #000;
+  height: initial !important;
+  overflow: initial !important;
 }
 </style>
 <script>
@@ -88,6 +139,7 @@ export default {
       topString: '',
       projects: [],
       tableReady: false,
+      rowsPerPage: 10,
     }
   },
   methods: {
@@ -98,14 +150,17 @@ export default {
       this.projects = JSON.parse(localStorage.getItem('project'));
       this.tableReady = true;
       if (this.printDate === true) {
-        if (this.printProject === 'all') {
-          this.topString = new Date().toLocaleDateString();
-        } else {
-          this.topString = this.projects[parseInt(this.printProject)].name + " - " + new Date().toLocaleDateString();
-        }
+        this.topString = new Date().toLocaleDateString();
       } else {
         this.topString = '';
       }
+    },
+    getPaginatedRows(rows) {
+      const chunks = [];
+      for (let i = 0; i < rows.length; i += this.rowsPerPage) {
+        chunks.push(rows.slice(i, i + this.rowsPerPage));
+      }
+      return chunks;
     },
     printPage() {
       setTimeout(() => {

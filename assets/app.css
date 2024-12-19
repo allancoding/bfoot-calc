@@ -361,6 +361,6 @@ button:hover {
 }
 
 .print {
-  display: none;
+  display: block;
   width: 100%;
 }
