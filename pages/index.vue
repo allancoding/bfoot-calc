@@ -288,6 +288,9 @@ export default {
         },
         rowsPerPage: {
             handler() {
+                if (this.rowsPerPage < 1) {
+                    this.rowsPerPage = 1;
+                }
                 this.loadPrint();
             },
             deep: true,
