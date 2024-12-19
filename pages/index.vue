@@ -13,6 +13,9 @@
             <a href="#settings" @click="openSettingsModal" title="Settings">
                 <Icon name="uil:setting" class="icon" />
             </a>
+            <a href="#about" title="About" @click="openAboutModal">
+                <Icon name="uil:question-circle" class="icon" />
+            </a>
             <a href="https://github.com/allancoding/bfoot-calc" title="GitHub">
                 <Icon name="uil:github" class="icon" />
             </a>
@@ -155,6 +158,7 @@
         </Modal>
         <Modal @close-modal="closePrintModal" :class="[showPrintModal ? 'showModal' : 'hideModal']">
             <h2>Print</h2>
+            <p>Depending whether you are using portrait or landscape you may have to change the Rows to page.</p>
             <div>
                 <label for="username">Your Name:</label>
                 <input type="text" id="username" class="styled-input" v-model="username" />
@@ -168,6 +172,10 @@
                     </option>
                 </select>
             </div>
+            <div>
+                <label for="rows">Rows Per Page:</label>
+                <input type="number" id="rows" step="1" class="styled-input" v-model="rowsPerPage" />
+            </div>
             <div style="margin-bottom: 20px;">
                 <label for="date">Show Today's Date:</label>
                 <input type="checkbox" id="date" class="styled-checkbox" v-model="showDate" />
@@ -175,8 +183,26 @@
             <button @click="printPage">Print</button>
             <button @click="closePrintModal">Close</button>
         </Modal>
+        <Modal @close-modal="closeAboutModal" :class="[showAboutModal ? 'showModal' : 'hideModal']">
+            <h2>About</h2>
+            <p>
+                This is a simple board foot calculator that allows you to calculate the board feet of a project.<br>
+                You can also change the prices of the wood types and save your projects.
+            </p>
+            <p>
+                You can view the source code on <a href="https://github.com/allancoding/bfoot-calc" target="_blank">GitHub</a>.
+            </p>
+            <p>
+                This project was created by <a href="https://allancoding.dev" target="_blank">Allan Coding</a>.
+            </p>
+            <button @click="closeAboutModal">Close</button>
+        </Modal>
     </div>
     <iframe class="print" id="print" src="print"></iframe>
+    <footer>
+        <p>Created by <a href="https://allancoding.dev" target="_blank">Allan Coding</a></p>
+        <p>View the <a href="https://github.com/allancoding/bfoot-calc" target="_blank">Source code</a></p>
+    </footer>
 </template>
 <script>
 import Modal from "./components/Modal.vue";
@@ -228,10 +254,12 @@ export default {
             selectedProject: 0,
             printProject: "all",
             showDate: false,
+            rowsPerPage: 30,
             tempWoodtypes: [],
             showPriceModal: false,
             showSettingsModal: false,
             showPrintModal: false,
+            showAboutModal: false,
             tableReady: false,
             defaultWood: "Alder",
         };
@@ -253,6 +281,12 @@ export default {
             deep: true,
         },
         printProject: {
+            handler() {
+                this.loadPrint();
+            },
+            deep: true,
+        },
+        rowsPerPage: {
             handler() {
                 this.loadPrint();
             },
@@ -340,6 +374,15 @@ export default {
         closePrintModal() {
             this.showPrintModal = false;
             if (window.location.hash === "#print") {
+                history.replaceState(null, null, " ");
+            }
+        },
+        openAboutModal() {
+            this.showAboutModal = true;
+        },
+        closeAboutModal() {
+            this.showAboutModal = false;
+            if (window.location.hash === "#about") {
                 history.replaceState(null, null, " ");
             }
         },
@@ -503,6 +546,7 @@ export default {
         deleteAllProjects() {
             const check = confirm("Are you sure you want to delete all projects?");
             if (check) {
+                this.selectedProject = 0;
                 this.projects = [
                     {
                         name: "Default Project",
@@ -541,6 +585,7 @@ export default {
             const IFrame = document.getElementById("print");
             localStorage.setItem("username", this.username);
             localStorage.setItem("printProject", this.printProject);
+            localStorage.setItem("rowsPerPage", this.rowsPerPage);
             localStorage.setItem("showDate", this.showDate);
             IFrame.contentWindow.postMessage("load", "*");
         }
@@ -561,6 +606,10 @@ export default {
         if (savedPrintProject) {
             this.printProject = savedPrintProject;
         }
+        const savedRowsPerPage = localStorage.getItem("rowsPerPage");
+        if (savedRowsPerPage) {
+            this.rowsPerPage = parseInt(savedRowsPerPage);
+        }
         const savedShowDate = localStorage.getItem("showDate");
         if (savedShowDate) {
             this.showDate = savedShowDate === "true";
@@ -573,6 +622,8 @@ export default {
         } else if (window.location.hash === "#print") {
             this.showPrintModal = true;
             this.loadPrint();
+        } else if (window.location.hash === "#about") {
+            this.showAboutModal = true;
         }
         const savedDefaultWood = localStorage.getItem("defaultwood");
         if (savedDefaultWood) {
@@ -606,6 +657,14 @@ export default {
                 event.preventDefault();
             }
         });
+        const handlePrintShortcut = (event) => {
+        const isPrintShortcut = (event.ctrlKey || event.metaKey) && event.key === 'p';
+        if (isPrintShortcut) {
+            event.preventDefault();
+            this.openPrintModal();
+        }
+        };
+        window.addEventListener('keydown', handlePrintShortcut);
     },
 };
 </script>

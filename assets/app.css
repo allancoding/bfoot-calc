@@ -361,6 +361,29 @@ button:hover {
 }
 
 .print {
-  display: block;
-  width: 100%;
+  display: none;
+}
+
+a {
+  color: #C68E17;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #CC7722;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: #000;
+  color: #fff;
+  flex-direction: column;
+  margin-bottom: 5px;
+}
+
+footer p {
+  margin: 2px 0;
 }

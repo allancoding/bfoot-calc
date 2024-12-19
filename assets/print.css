@@ -1,6 +1,6 @@
 main {
-    margin-right: 5px;
     margin-left: 5px;
+    margin-right: 5px;
 }
 
 header {
@@ -22,7 +22,11 @@ header {
 .print-table {
     color: #000 !important;
     border: 2px solid black !important;
-    overflow: initial !important;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.page-break {
     page-break-after: always;
 }
 
@@ -33,12 +37,12 @@ header {
 .print-table table {
     color: black !important;
     page-break-inside: auto;
+    table-layout: auto !important;
 }
 
 .print-table th,
 .print-table td {
   border-right: 2px solid black !important;
-  border-bottom: 2px solid black !important;
 }
 
 .print-table th:last-child,
@@ -49,10 +53,14 @@ header {
 .print-table thead tr {
     border-bottom: 2px solid black !important;
 }
-  
+
 .print-table tfoot tr {
     border-top: 2px solid black !important;
     border-bottom: 0px !important;
+}
+
+.print-table tbody tr td {
+    border-top: 2px solid black !important;
 }
 
 .print-table tfoot tr td {
