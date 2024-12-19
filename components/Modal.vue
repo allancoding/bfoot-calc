@@ -49,7 +49,7 @@
     border: 1px solid white;
     position: relative;
     text-align: center;
-    max-width: 80vw;
+    max-width: 80%;
   }
 
   .close {
