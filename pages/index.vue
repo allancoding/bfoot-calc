@@ -195,19 +195,23 @@
             <p>
                 This project was created by <a href="https://allancoding.dev" target="_blank">Allan Coding</a>.
             </p>
+            <p>
+                Version: {{ appVersion }}
+            </p>
             <button @click="closeAboutModal">Close</button>
         </Modal>
     </div>
     <iframe class="print" id="print" src="print"></iframe>
     <footer>
         <p>Created by <a href="https://allancoding.dev" target="_blank">Allan Coding</a></p>
-        <p>View the <a href="https://github.com/allancoding/bfoot-calc" target="_blank">Source Code</a></p>
+        <p>View the <a href="https://github.com/allancoding/bfoot-calc" target="_blank">Source Code</a> - {{ appVersion }}</p>
     </footer>
 </template>
 <script>
-import Modal from "./components/Modal.vue";
+import Modal from "~/components/Modal.vue";
 import "~/assets/app.css";
 import "~/assets/scrollbar.css";
+import { version } from '../package.json'
 
 export default {
     components: {
@@ -262,6 +266,7 @@ export default {
             showAboutModal: false,
             tableReady: false,
             defaultWood: "Alder",
+            appVersion: version,
         };
     },
     created() {

@@ -1,6 +1,6 @@
 {
   "name": "bfoot-calc",
-  "version": "1.0.0",
+  "version": "1.4.0",
   "description": "A Board Foot Calculator for woods projects to generate prices",
   "git": {
     "repository": "https://github.com/allancoding/bfoot-calc"
