@@ -1,6 +1,6 @@
 {
   "name": "bfoot-calc",
-  "version": "1.4.3",
+  "version": "1.4.4",
   "description": "A Board Foot Calculator for woods projects to generate prices",
   "git": {
     "repository": "https://github.com/allancoding/bfoot-calc"
@@ -13,8 +13,8 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
-    "@nuxt/icon": "^2.2.3",
-    "nuxt": "^4.4.8",
-    "vue": "^3.5.38"
+    "@nuxt/icon": "^2.5.1",
+    "nuxt": "^4.5.2",
+    "vue": "^3.5.42"
   }
 }
